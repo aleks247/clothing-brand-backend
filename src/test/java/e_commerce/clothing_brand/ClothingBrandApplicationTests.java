@@ -1,0 +1,13 @@
+package e_commerce.clothing_brand;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ClothingBrandApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
