@@ -1,19 +1,16 @@
-package e_commerce.clothing_brand.entity;
+package e_commerce.clothing_brand.entity.Product;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Table(name = "categories")
+@Table(name = "brands")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category {
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +19,7 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // Optional: list of products in this category
-//    @OneToMany(mappedBy = "category")
+    // Optional: list of products for easier navigation
+//    @OneToMany(mappedBy = "brand")
 //    private List<Product> products = new ArrayList<>();
 }

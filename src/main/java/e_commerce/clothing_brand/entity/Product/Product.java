@@ -1,4 +1,4 @@
-package e_commerce.clothing_brand.entity;
+package e_commerce.clothing_brand.entity.Product;
 
 import e_commerce.clothing_brand.enums.Gender;
 import e_commerce.clothing_brand.enums.ProductTag;

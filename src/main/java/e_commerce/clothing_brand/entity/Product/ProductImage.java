@@ -1,4 +1,4 @@
-package e_commerce.clothing_brand.entity;
+package e_commerce.clothing_brand.entity.Product;
 
 import jakarta.persistence.*;
 import lombok.*;
