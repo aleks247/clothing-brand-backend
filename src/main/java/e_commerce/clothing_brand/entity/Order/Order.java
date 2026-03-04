@@ -4,7 +4,6 @@ import e_commerce.clothing_brand.entity.User;
 import e_commerce.clothing_brand.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
