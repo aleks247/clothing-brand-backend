@@ -1,4 +1,4 @@
-package e_commerce.clothing_brand.entity.Product;
+package e_commerce.clothing_brand.entity.product;
 
 import e_commerce.clothing_brand.enums.Gender;
 import e_commerce.clothing_brand.enums.ProductTag;
@@ -37,9 +37,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductTag tag; // NEW, SALE, FEATURED
 
+    @Builder.Default
     private Boolean active = true;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // Brand relationship
@@ -54,9 +57,11 @@ public class Product {
 
     // Product variants (size + color + stock)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ProductVariant> variants = new ArrayList<>();
 
     // Product images
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ProductImage> images = new ArrayList<>();
 }

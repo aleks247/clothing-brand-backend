@@ -1,6 +1,6 @@
-package e_commerce.clothing_brand.entity.Order;
+package e_commerce.clothing_brand.entity.order;
 
-import e_commerce.clothing_brand.entity.Product.Product;
+import e_commerce.clothing_brand.entity.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

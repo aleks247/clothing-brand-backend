@@ -1,16 +1,17 @@
-package e_commerce.clothing_brand.entity.Product;
+package e_commerce.clothing_brand.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "brands")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category {
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,8 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // Optional: list of products in this category
-//    @OneToMany(mappedBy = "category")
+    // Optional: list of products for easier navigation
+//    @OneToMany(mappedBy = "brand")
+//    @JsonIgnore
 //    private List<Product> products = new ArrayList<>();
 }

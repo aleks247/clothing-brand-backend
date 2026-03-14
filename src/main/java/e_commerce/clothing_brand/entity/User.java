@@ -1,6 +1,7 @@
 package e_commerce.clothing_brand.entity;
 
-import e_commerce.clothing_brand.entity.Order.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import e_commerce.clothing_brand.entity.order.Order;
 import e_commerce.clothing_brand.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,13 +38,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder.Default
     private Boolean enabled = true;
+    @Builder.Default
     private Boolean accountNonLocked = true;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 
 }
