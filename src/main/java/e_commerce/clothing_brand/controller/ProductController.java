@@ -1,12 +1,10 @@
 package e_commerce.clothing_brand.controller;
 
+import e_commerce.clothing_brand.dto.product.ProductRequestDTO;
 import e_commerce.clothing_brand.dto.product.ProductResponseDTO;
 import e_commerce.clothing_brand.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,20 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductResponseDTO getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
+    }
+
+    @PostMapping()
+    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto){
+        return productService.createProduct(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ProductResponseDTO updateProduct(@PathVariable Long id,@RequestBody ProductRequestDTO dto){
+        return productService.updateProduct(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
     }
 }
