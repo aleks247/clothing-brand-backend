@@ -5,6 +5,8 @@ import e_commerce.clothing_brand.dto.product.ProductResponseDTO;
 import e_commerce.clothing_brand.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -25,9 +27,11 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PostMapping()
-    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto){
-        return productService.createProduct(dto);
+    @PostMapping(consumes = "multipart/form-data")
+    public ProductResponseDTO createProduct(@RequestPart("product") String productJson, @RequestPart("images") List<MultipartFile> images) {
+        ObjectMapper mapper = new ObjectMapper();
+        ProductRequestDTO productDTO = mapper.readValue(productJson, ProductRequestDTO.class);
+        return productService.createProduct(productDTO, images);
     }
 
     @PutMapping("/{id}")

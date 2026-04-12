@@ -56,12 +56,23 @@ public class Product {
     private Category category;
 
     // Product variants (size + color + stock)
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     private List<ProductVariant> variants = new ArrayList<>();
 
     // Product images
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     private List<ProductImage> images = new ArrayList<>();
+
+    public void setImages(List<ProductImage> newImages) {
+        if (this.images == null) {
+            this.images = newImages;
+        } else {
+            this.images.clear();
+            if (newImages != null) {
+                this.images.addAll(newImages);
+            }
+        }
+    }
 }

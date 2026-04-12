@@ -1,5 +1,7 @@
 package e_commerce.clothing_brand.dto.product;
 
+import e_commerce.clothing_brand.enums.Gender;
+import e_commerce.clothing_brand.enums.ProductTag;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,8 +15,9 @@ public class ProductRequestDTO {
     private String name;
     private String description;
     private BigDecimal price;
-    private String gender;
-    private String tag;
+    private Gender gender;
+    private ProductTag tag;
     private Long brandId;
     private Long categoryId;
+
 }
