@@ -5,6 +5,7 @@ import e_commerce.clothing_brand.enums.ProductTag;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,5 +20,6 @@ public class ProductRequestDTO {
     private ProductTag tag;
     private Long brandId;
     private Long categoryId;
+    private List<ProductVariantDTO> variants;
 
 }

@@ -2,10 +2,7 @@ package e_commerce.clothing_brand.service;
 
 import e_commerce.clothing_brand.dto.product.ProductRequestDTO;
 import e_commerce.clothing_brand.dto.product.ProductResponseDTO;
-import e_commerce.clothing_brand.entity.product.Brand;
-import e_commerce.clothing_brand.entity.product.Category;
-import e_commerce.clothing_brand.entity.product.Product;
-import e_commerce.clothing_brand.entity.product.ProductImage;
+import e_commerce.clothing_brand.entity.product.*;
 import e_commerce.clothing_brand.mapper.ProductMapper;
 import e_commerce.clothing_brand.repository.BrandRepository;
 import e_commerce.clothing_brand.repository.CategoryRepository;
@@ -46,49 +43,51 @@ public class ProductService {
     }
 
     public ProductResponseDTO createProduct(ProductRequestDTO dto, List<MultipartFile> images) {
-
         Product product = productMapper.toEntity(dto);
 
-        productRepository.save(product);
+        if (dto.getVariants() != null && !dto.getVariants().isEmpty()) {
+            List<ProductVariant> variantList = dto.getVariants().stream().map(vDto -> {
+                return ProductVariant.builder()
+                        .size(vDto.getSize())
+                        .color(vDto.getColor())
+                        .stock(vDto.getStock())
+                        .sku(vDto.getSku())
+                        .product(product)
+                        .build();
+            }).collect(Collectors.toList());
+
+            product.setVariants(variantList);
+        }
 
         String uploadDir = "uploads/";
-
         File directory = new File(uploadDir);
         if (!directory.exists()) {
             directory.mkdir();
         }
 
         List<ProductImage> imageList = new ArrayList<>();
+        if (images != null && !images.isEmpty()) {
+            for (MultipartFile file : images) {
+                try {
+                    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    Path filePath = Paths.get(uploadDir + fileName);
+                    Files.write(filePath, file.getBytes());
 
-        for (MultipartFile file : images) {
-
-            try {
-                if (!file.getContentType().startsWith("image/")) {
-                    throw new RuntimeException("Only images allowed");
+                    ProductImage image = ProductImage.builder()
+                            .imageUrl("/uploads/" + fileName)
+                            .product(product)
+                            .build();
+                    imageList.add(image);
+                } catch (Exception e) {
+                    throw new RuntimeException("Image upload failed");
                 }
-
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                Path filePath = Paths.get(uploadDir + fileName);
-
-                Files.write(filePath, file.getBytes());
-
-                ProductImage image = ProductImage.builder()
-                        .imageUrl("/uploads/" + fileName)
-                        .product(product)
-                        .build();
-
-                imageList.add(image);
-
-            } catch (Exception e) {
-                throw new RuntimeException("Image upload failed");
             }
+            product.setImages(imageList);
         }
 
-        product.setImages(imageList);
+        Product savedProduct = productRepository.save(product);
 
-        productRepository.save(product);
-
-        return productMapper.toDTO(product);
+        return ProductMapper.toDTO(savedProduct);
     }
 
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto) {

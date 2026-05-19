@@ -6,6 +6,7 @@ import e_commerce.clothing_brand.entity.product.ProductImage;
 import e_commerce.clothing_brand.entity.product.ProductVariant;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList; // 👈 Don't forget this import
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,10 @@ public class ProductMapper {
                 .build();
     }
 
-    private static List<ProductVariantDTO> mapVariants(List<ProductVariant> variants) {
+    private static ArrayList<ProductVariantDTO> mapVariants(List<ProductVariant> variants) {
+        if (variants == null) {
+            return new ArrayList<>();
+        }
         return variants.stream().map(v ->
                 ProductVariantDTO.builder()
                         .id(v.getId())
@@ -48,15 +52,18 @@ public class ProductMapper {
                         .stock(v.getStock())
                         .sku(v.getSku())
                         .build()
-        ).collect(Collectors.toList());
+        ).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private static List<ProductImageDTO> mapImages(List<ProductImage> images) {
+    private static ArrayList<ProductImageDTO> mapImages(List<ProductImage> images) {
+        if (images == null) {
+            return new ArrayList<>();
+        }
         return images.stream().map(i ->
                 ProductImageDTO.builder()
                         .id(i.getId())
                         .imageUrl(i.getImageUrl())
                         .build()
-        ).collect(Collectors.toList());
+        ).collect(Collectors.toCollection(ArrayList::new));
     }
 }
