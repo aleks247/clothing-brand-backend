@@ -55,24 +55,21 @@ public class OrderService {
     }
 
     public OrderResponseDTO createOrder(CreateOrderDTO dto) {
-
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Order order = Order.builder()
                 .user(user)
-//               Order status by default->
                 .status(OrderStatus.PROCESSING)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                // Initialize the list to prevent NullPointerExceptions
+                .items(new ArrayList<>())
                 .build();
 
         BigDecimal total = BigDecimal.ZERO;
 
-        List<OrderItem> items = new ArrayList<>();
-
         for (CreateOrderItemDTO itemDTO : dto.getItems()) {
-
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -87,10 +84,9 @@ public class OrderService {
 
             total = total.add(price.multiply(BigDecimal.valueOf(itemDTO.getQuantity())));
 
-            items.add(item);
+            order.getItems().add(item);
         }
 
-        order.setItems(items);
         order.setTotalAmount(total);
 
         orderRepository.save(order);

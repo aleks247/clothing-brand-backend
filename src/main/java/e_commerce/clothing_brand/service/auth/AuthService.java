@@ -18,7 +18,6 @@ public class AuthService {
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Register new user
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
@@ -46,7 +45,6 @@ public class AuthService {
                 .build();
     }
 
-    // Login existing user
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
@@ -59,6 +57,10 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .role(user.getRole().name())
+                .userId(user.getId())
                 .build();
     }
 }
